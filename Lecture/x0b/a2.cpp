@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int N, K;
+int N;
 
 void func(int n, int src, int dst) {
     if (n == 1) {
@@ -19,6 +19,7 @@ int main(void) {
     cin.tie(nullptr);
 
     cin >> N;
+    cout << (1 << N) - 1 << '\n';
     func(N, 1, 3);
 
     return 0;
