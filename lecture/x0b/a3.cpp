@@ -1,19 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int board[15][15];
 int N, R, C;
-int cnt;
 
-void search() {
-    if () {
-        board[][] = cnt++;
+int func(int n, int r, int c) {
+    if (n == 0) return 0;
+
+    int half = 1 << (n - 1);
+
+    if (r < half && c < half) {
+        return func(n-1, r, c);
+    } else if (r < half && c >= half) {
+        return half * half + func(n-1, r, c - half);
+    } else if (r >= half && c < half) {
+        return 2 * half * half + func(n-1, r - half, c);
+    } else {
+        return 3 * half * half + func(n-1, r - half, c - half);
     }
-
-    search();
-    search();
-    search();
-    search();
 }
 
 int main(void) {
@@ -21,8 +24,7 @@ int main(void) {
     cin.tie(nullptr);
 
     cin >> N >> R >> C;
-    search();
-    cout << board[R][C] << '\n';
+    cout << func(N, R, C) << '\n';
 
     return 0;
 }
