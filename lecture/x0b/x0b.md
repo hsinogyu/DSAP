@@ -300,8 +300,22 @@ int main(void) {
     return 0;
 }
 ```
+- 사고 과정
+    - 전체적인 그림으로 보기
+    - 1 2 3 4의 칸이 있고, 2번칸을 방문하기 위해서는 1번칸을 무조건 방문, 3번칸을 방문하기 위해서는 1번, 2번칸을 무조건 방문
+    - 그림을 키워도 동일함
+    - 특정 사분면의 특정 좌표를 탐색하기 위해서 이전 사분면의 모든 칸을 거쳐야됨
+    - 한 사분면의 크기: 내가 지금 방문해야하는 사각형의 1/4
+
 - 함수의 정의
+    - int func(int n, int r, int c): 2^n * 2^n 배열에서 (r, c)를 방문하는 순서를 반환하는 함수
 
 - base condition
+    - n == 0일 때 return 0;
 
 - 재귀식
+    - (r, c) 1번 사각형일 때 return func(n-1, r, c);
+    - (r, c) 2번 사각형일 때 return half * half + func(n-1, r, c-half)
+    - (r, c) 3번 사각형일 때 return 2 * half * half + func(n-1, r-half, c)
+    - (r, c) 4번 사각형일 때 return 3 * half * half + func(n-1, r-half, c-half)
+    - 여기서 half는 n-1
