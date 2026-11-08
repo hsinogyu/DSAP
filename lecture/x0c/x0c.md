@@ -195,8 +195,135 @@ int main(void) {
 ### BOJ 1182번: 부분 수열의 합
 - 원소가 n개인 집합에서 부분집합의 갯수는 2^n(공집합 포함)
 ```cpp
+#include <bits/stdc++.h>
+using namespace std;
 
+int N, S, ans;
+int board[20];
+
+void func(int k, int sum) {
+    if (k > 0 && sum == S) {
+        ans++;
+    }
+    
+    if (k == N) { // 사실상 없어도 됨
+        return;
+    }
+
+    for (int i = k; i < N; i++) {
+        func(i + 1, sum + board[i]);
+    }
+}
+
+int main(void) {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> N >> S;
+    for (int i = 0; i < N; i++) {
+        int input;
+        cin >> input;
+        board[i] = input;
+    }
+
+    func(0, 0);
+    cout << ans << '\n';
+
+    return 0;
+}
+```
+
+### 조금 더 좋은 접근
+- 한쪽은 원소를 넣지 않았을 때 / 한쪽은 원소를 넣었을 때로 상태 공간 트리를 구분
+- 즉, 매 순간 수를 더할지 말지를 선택
+- 주의할 점: 공집합은 포함되지 않도록 조절해야함(원소를 전부 넣지 않았을 경우가 공집함)
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int N, S, ans;
+int board[20];
+
+void func(int k, int sum) { // 현재까지 사용한 원소의 위치와 그 합
+    if (k == N) {
+        if (sum == S) {
+            ans++;
+        }
+        return;
+    }
+
+    // 현재 가리키고 있는 원소를 더하지 않는 경우
+    func(k + 1, sum);
+
+    // 현재 가리키고 있는 원소를 더하는 경우
+    func(k + 1, sum + board[k]);
+}
+
+int main(void) {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    cin >> N >> S;
+    for (int i = 0; i < N; i++) {
+        int input;
+        cin >> input;
+        board[i] = input;
+    }
+
+    func(0, 0);
+    if (S == 0) {
+        ans--;
+    }
+    cout << ans << '\n';
+
+    return 0;
+}
 ```
 
 ---
 ## STL next_permutation
+
+### 예제
+- 순열 처리
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(void) {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int a[3] = {1, 2, 3};
+
+    do {
+        for (int i = 0; i < 3; i++) {
+            cout << a[i];
+        }
+        cout << '\n';
+    } while (next_permutation(a, a + 3));
+
+    return 0;
+}
+```
+
+- 조합 처리
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(void) {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int a[4] = {0, 0, 1, 1};
+
+    do {
+        for (int i = 0; i < 4; i++) {
+            cout << i + 1;
+        }
+        cout << '\n';
+    } while (next_permutation(a, a + 4));
+
+    return 0;
+}
+```
